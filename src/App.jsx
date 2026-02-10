@@ -7,26 +7,33 @@ import LandingPage from "./components/LandingPage";
 import StudentVerification from "./components/StudentVerification";
 import SubjectFeedback from "./components/SubjectFeedback";
 import SuccessPage from "./components/SuccessPage";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Navigate, Route, Routes } from "react-router-dom";
+
+/* Student Pages */
+
+/* Admin Pages */
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Student Routes */}
+        {/* ---------- Student Routes ---------- */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/verify" element={<StudentVerification />} />
         <Route path="/feedback" element={<SubjectFeedback />} />
         <Route path="/success" element={<SuccessPage />} />
-        
-        {/* Admin Routes */}
+
+        {/* ---------- Admin Routes ---------- */}
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/reports" element={<FeedbackReports />} />
         <Route path="/admin/faculty-analysis" element={<FacultyAnalysis />} />
+
+        {/* ---------- Fallback Route ---------- */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;
