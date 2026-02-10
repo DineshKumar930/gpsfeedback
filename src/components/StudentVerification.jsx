@@ -3,93 +3,98 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const StudentVerification = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    rollNumber: '',
-    branch: ''
-  })
-  const [errors, setErrors] = useState({})
-  const [isSubmitting, setIsSubmitting] = useState(false)
+    rollNumber: "",
+    branch: "",
+  });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const branches = [
-    { value: '', label: 'Select your branch' },
-    { value: 'CSE', label: 'Computer Science & Engineering' },
-    { value: 'ME', label: 'Mechanical Engineering' },
-    { value: 'EE', label: 'Electrical Engineering' }
-  ]
+    { value: "", label: "Select your branch" },
+    { value: "CSE", label: "Computer Science & Engineering" },
+    { value: "ME", label: "Mechanical Engineering" },
+    { value: "EE", label: "Electrical Engineering" },
+  ];
 
   const validateForm = () => {
-    const newErrors = {}
-    
+    const newErrors = {};
+
     if (!formData.rollNumber.trim()) {
-      newErrors.rollNumber = 'Roll number is required'
+      newErrors.rollNumber = "Roll number is required";
     } else if (!/^\d{6,10}$/.test(formData.rollNumber)) {
-      newErrors.rollNumber = 'Enter valid roll number (6-10 digits)'
+      newErrors.rollNumber = "Enter valid roll number (6-10 digits)";
     }
-    
+
     if (!formData.branch) {
-      newErrors.branch = 'Please select your branch'
+      newErrors.branch = "Please select your branch";
     }
-    
-    return newErrors
-  }
+
+    return newErrors;
+  };
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
+    const { name, value } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
-    }))
-    
+      [name]: value,
+    }));
+
     // Clear error when user types
     if (errors[name]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: ''
-      }))
+        [name]: "",
+      }));
     }
-  }
+  };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const validationErrors = validateForm();
-  if (Object.keys(validationErrors).length > 0) {
-    setErrors(validationErrors);
-    return;
-  }
-
-  setIsSubmitting(true);
-
-  try {
-    // 🔍 backend check
-    const res = await fetch(
-      `https://feedbackapi-4p6d.onrender.com/api/feedback/check/${formData.rollNumber}`
-    );
-
-    const data = await res.json();
-
-    if (data.exists) {
-      setErrors({
-        rollNumber: data.message, // 👈 "Already feedback submitted..."
-      });
-      setIsSubmitting(false);
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
       return;
     }
 
-    // ✅ allowed → save & proceed
-    localStorage.setItem("studentData", JSON.stringify(formData));
-    navigate("/feedback");
+    setIsSubmitting(true);
 
-  } catch (error) {
-    setErrors({
-      rollNumber: "Server error, please try again",
-    });
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+    try {
+      // ✅ Use dynamic API URL from environment variables
+      const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000";
+      const res = await fetch(
+        `${API_BASE}/api/feedback/check/${formData.rollNumber}`
+      );
 
+      if (!res.ok) {
+        throw new Error("Server error");
+      }
+
+      const data = await res.json();
+
+      if (data.exists) {
+        setErrors({
+          rollNumber: data.message || "Feedback already submitted",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+
+      // ✅ Allowed → save & proceed
+      localStorage.setItem("studentData", JSON.stringify(formData));
+      navigate("/feedback");
+    } catch (error) {
+      console.error("API error:", error);
+      setErrors({
+        rollNumber:
+          "Server not responding or sleeping. Try again in a few seconds.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="verification-page">
@@ -105,7 +110,7 @@ const StudentVerification = () => {
               Enter your details to proceed with feedback
             </p>
           </div>
-          
+
           {/* Form */}
           <form onSubmit={handleSubmit} className="verification-form">
             {/* Roll Number */}
@@ -121,18 +126,17 @@ const StudentVerification = () => {
                 value={formData.rollNumber}
                 onChange={handleChange}
                 placeholder="Enter your roll number"
-                className={errors.rollNumber ? 'error' : ''}
+                className={errors.rollNumber ? "error" : ""}
                 maxLength="10"
                 inputMode="numeric"
               />
               {errors.rollNumber && (
                 <div className="error-message">
-                  <span>⚠</span>
-                  {errors.rollNumber}
+                  <span>⚠</span> {errors.rollNumber}
                 </div>
               )}
             </div>
-            
+
             {/* Branch Selection */}
             <div className="input-group">
               <label htmlFor="branch">
@@ -144,7 +148,7 @@ const StudentVerification = () => {
                 name="branch"
                 value={formData.branch}
                 onChange={handleChange}
-                className={errors.branch ? 'error' : ''}
+                className={errors.branch ? "error" : ""}
               >
                 {branches.map((branch) => (
                   <option key={branch.value} value={branch.value}>
@@ -154,12 +158,11 @@ const StudentVerification = () => {
               </select>
               {errors.branch && (
                 <div className="error-message">
-                  <span>⚠</span>
-                  {errors.branch}
+                  <span>⚠</span> {errors.branch}
                 </div>
               )}
             </div>
-            
+
             {/* Info Box */}
             <div className="info-box">
               <div className="info-icon">ℹ️</div>
@@ -168,35 +171,34 @@ const StudentVerification = () => {
                 Personal details are only used for validation purposes.
               </div>
             </div>
-            
+
             {/* Submit Button */}
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="btn btn-primary submit-btn"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
                 <>
-                  <span className="loading-spinner"></span>
-                  Verifying...
+                  <span className="loading-spinner"></span> Verifying...
                 </>
               ) : (
-                'Proceed to Feedback →'
+                "Proceed to Feedback →"
               )}
             </button>
           </form>
-          
+
           {/* Back Button */}
-          <button 
+          <button
             className="btn btn-secondary back-btn"
-            onClick={() => navigate('/')}
+            onClick={() => navigate("/")}
           >
             ← Back to Home
           </button>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default StudentVerification
+export default StudentVerification;
