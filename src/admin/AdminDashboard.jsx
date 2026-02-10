@@ -58,7 +58,7 @@ const AdminDashboard = () => {
     setAdminName(username);
 
     setLoading(true);
-    fetch("http://localhost:5000/api/admin/feedback-report")
+    fetch("https://gpsfeedbackend.onrender.com/api/admin/feedback-report")
       .then((res) => res.json())
       .then((data) => {
         if (data.success && data.report) {
@@ -124,16 +124,14 @@ const AdminDashboard = () => {
     setDeleteLoading(prev => ({ ...prev, [selectedFeedback.id]: true }));
     
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/feedback/admin/${selectedFeedback.id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
-          },
-        }
-      );
+      const response = await fetch(`https://gpsfeedbackend.onrender.com/api/feedback/admin/${selectedFeedback.id}`, {
+  method: "DELETE",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+  },
+});
+
 
       const data = await response.json();
       
@@ -162,16 +160,14 @@ const AdminDashboard = () => {
     setBulkDeleteLoading(true);
     
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/feedback/admin/by-roll/${selectedRoll}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
-          },
-        }
-      );
+      const response = await fetch(`https://gpsfeedbackend.onrender.com/api/feedback/admin/by-roll/${selectedRoll}`, {
+  method: "DELETE",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+  },
+});
+
 
       const data = await response.json();
       
