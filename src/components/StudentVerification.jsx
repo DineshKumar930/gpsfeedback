@@ -64,7 +64,7 @@ const StudentVerification = () => {
   try {
     // 🔍 backend check
     const res = await fetch(
-      `http://localhost:5000/api/feedback/check/${formData.rollNumber}`
+      `https://feedbackapi-4p6d.onrender.com/api/feedback/check/${formData.rollNumber}`
     );
 
     const data = await res.json();
