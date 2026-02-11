@@ -33,7 +33,7 @@ const FacultyFeedbackDashboard = () => {
       setLoading(true);
 
       const response = await fetch(
-        "http://localhost:5000/api/admin/feedback-report"
+        "https://feedbackapi-4p6d.onrender.com/api/admin/feedback-report"
       );
 
       const data = await response.json();
@@ -1156,5 +1156,6 @@ const FacultyFeedbackDashboard = () => {
     </div>
   );
 };
+
 
 export default FacultyFeedbackDashboard;
