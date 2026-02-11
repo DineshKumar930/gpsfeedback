@@ -2,6 +2,7 @@ import "./App.css";
 import AdminDashboard from "./admin/AdminDashboard";
 import AdminLogin from "./admin/AdminLogin";
 import FacultyAnalysis from "./admin/FacultyAnalysis";
+import FacultyFeedbackDashboard from "./admin/FacultyFeedbackDashboard";
 import FeedbackReports from "./admin/FeedbackReports";
 import LandingPage from "./components/LandingPage";
 import StudentVerification from "./components/StudentVerification";
@@ -28,6 +29,7 @@ function App() {
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/reports" element={<FeedbackReports />} />
         <Route path="/admin/faculty-analysis" element={<FacultyAnalysis />} />
+         <Route path="/admin/faculty-dashboard" element={<FacultyFeedbackDashboard />} />
 
         {/* ---------- Fallback Route ---------- */}
         <Route path="*" element={<Navigate to="/" replace />} />
