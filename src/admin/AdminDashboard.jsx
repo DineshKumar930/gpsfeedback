@@ -3,6 +3,7 @@ import autoTable from "jspdf-autotable";
 import jsPDF from "jspdf";
 import { useEffect, useState } from "react";
 import { CSVLink } from "react-csv";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -500,6 +501,12 @@ const AdminDashboard = () => {
             <p className="stat-label">Unique Students</p>
           </div>
         </div>
+
+        <Link to="/admin/faculty-dashboard">
+  <button className="btn btn-primary">
+    View Faculty Feedback
+  </button>
+</Link>
       </div>
 
       <div className="charts-section">
