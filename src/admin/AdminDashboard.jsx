@@ -30,7 +30,7 @@ const AdminDashboard = () => {
 
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8"];
 
-  const BACKEND_URL = "https://gpsfeedbackend.onrender.com"; // Replace with your Render URL
+  const BACKEND_URL = "https://feedbackapi-4p6d.onrender.com"; // Replace with your Render URL
 
   useEffect(() => {
     fetchFeedbackData();
