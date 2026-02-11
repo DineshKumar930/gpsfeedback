@@ -63,7 +63,8 @@ const StudentVerification = () => {
 
     try {
       // ✅ Use dynamic API URL from environment variables
-      const API_BASE = process.env.REACT_APP_API_URL;
+      const API_BASE = process.env.REACT_APP_API_URL || "https://feedbackapi-4p6d.onrender.com";
+
       const res = await fetch(
         `${API_BASE}/api/feedback/check/${formData.rollNumber}`
       );
