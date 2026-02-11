@@ -115,7 +115,7 @@ const LandingPage = () => {
           {/* Footer Note */}
           <p className="footer-note">
             Your feedback helps improve teaching quality and college infrastructure.
-            All responses are completely anonymous.
+            All responses are completely anonymous.<br/>Developed & Maintained by:<strong> Dinesh Roy</strong>
           </p>
 
           {/* Add this after the existing footer note */}
