@@ -30,9 +30,11 @@ const AdminDashboard = () => {
 
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8"];
 
+  const BACKEND_URL = "https://gpsfeedbackend.onrender.com"; // Replace with your Render URL
+
   useEffect(() => {
     fetchFeedbackData();
-  }, [navigate, refreshKey]);
+  }, [refreshKey]);
 
   useEffect(() => {
     if (viewMode === "search" && searchRoll.trim()) {
@@ -58,7 +60,14 @@ const AdminDashboard = () => {
     setAdminName(username);
 
     setLoading(true);
-    fetch("https://gpsfeedbackend.onrender.com/api/admin/feedback-report")
+    fetch(`${BACKEND_URL}/api/admin/feedback-report`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+      },
+      credentials: "include"
+    })
       .then((res) => res.json())
       .then((data) => {
         if (data.success && data.report) {
@@ -106,6 +115,7 @@ const AdminDashboard = () => {
   const handleLogout = () => {
     localStorage.removeItem("adminLoggedIn");
     localStorage.removeItem("adminUsername");
+    localStorage.removeItem("adminToken");
     navigate("/admin");
   };
 
@@ -124,14 +134,13 @@ const AdminDashboard = () => {
     setDeleteLoading(prev => ({ ...prev, [selectedFeedback.id]: true }));
     
     try {
-      const response = await fetch(`https://gpsfeedbackend.onrender.com/api/feedback/admin/${selectedFeedback.id}`, {
-  method: "DELETE",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
-  },
-});
-
+      const response = await fetch(`${BACKEND_URL}/api/feedback/admin/${selectedFeedback.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+        },
+      });
 
       const data = await response.json();
       
@@ -160,21 +169,20 @@ const AdminDashboard = () => {
     setBulkDeleteLoading(true);
     
     try {
-      const response = await fetch(`https://gpsfeedbackend.onrender.com/api/feedback/admin/by-roll/${selectedRoll}`, {
-  method: "DELETE",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
-  },
-});
-
+      const response = await fetch(`${BACKEND_URL}/api/feedback/admin/by-roll/${selectedRoll}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+        },
+      });
 
       const data = await response.json();
       
       if (data.success) {
         setRefreshKey(prev => prev + 1);
-        setSelectedRoll("");
         alert(`Successfully deleted ${data.deletedCount || 0} feedback entries for roll number ${selectedRoll}`);
+        setSelectedRoll("");
       } else {
         alert(data.message || "Failed to delete feedback");
       }
@@ -209,6 +217,7 @@ const AdminDashboard = () => {
     setSearchRoll("");
     setViewMode("latest");
   };
+
 
   const downloadPDF = () => {
     const doc = new jsPDF('landscape');
@@ -1302,6 +1311,13 @@ const AdminDashboard = () => {
       `}</style>
     </div>
   );
+
+
+
+  
+  // --- The rest of your code (downloadPDF, charts, CSV, JSX) remains exactly the same ---
+
+  // ... your existing JSX and styles here ...
 };
 
 export default AdminDashboard;
