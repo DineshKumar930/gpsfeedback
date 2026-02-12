@@ -120,21 +120,27 @@ const FacultyFeedbackDashboard = () => {
     const facultyMap = new Map();
     
     filteredData.forEach((item) => {
-      if (!facultyMap.has(item.facultyName)) {
-        facultyMap.set(item.facultyName, {
-          facultyName: item.facultyName,
-          branch: item.branch,
-          totalRating: 0,
-          totalFeedback: 0,
-          subjectCount: 0,
-        });
-      }
-      
-      const faculty = facultyMap.get(item.facultyName);
-      faculty.totalRating += item.averageRating * item.totalFeedback;
-      faculty.totalFeedback += item.totalFeedback;
-      faculty.subjectCount += 1;
+
+  // 👇 Faculty + Subject combine key preparing for chart data by faculty
+  const key = `${item.facultyName} (${item.subject})`;
+
+  if (!facultyMap.has(key)) {
+    facultyMap.set(key, {
+      facultyName: key,   // chart ke liye label
+      branch: item.branch,
+      totalRating: 0,
+      totalFeedback: 0,
+      subjectCount: 0,
     });
+  }
+
+  const faculty = facultyMap.get(key);
+
+  faculty.totalRating += item.averageRating * item.totalFeedback;
+  faculty.totalFeedback += item.totalFeedback;
+  faculty.subjectCount += 1;
+});
+
     
     // Calculate weighted average for each faculty
     return Array.from(facultyMap.values())
@@ -1159,3 +1165,4 @@ const FacultyFeedbackDashboard = () => {
 
 
 export default FacultyFeedbackDashboard;
+
