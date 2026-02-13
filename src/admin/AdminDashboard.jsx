@@ -223,7 +223,7 @@ const AdminDashboard = () => {
   const downloadPDF = () => {
     const doc = new jsPDF('landscape');
     
-    const tableColumn = ["Roll", "Branch", "Subject", "Faculty", "Rating", "Comment"];
+    const tableColumn = ["Enrollment No", "Branch", "Subject", "Faculty", "Rating", "Comment"];
     
     const tableRows = [];
     
@@ -277,7 +277,7 @@ const AdminDashboard = () => {
         valign: 'middle'
       },
       columnStyles: {
-        0: { cellWidth: 25, halign: 'center' },
+        0: { cellWidth: 60, halign: 'center' },
         1: { cellWidth: 30, halign: 'center' },
         2: { cellWidth: 40 },
         3: { cellWidth: 40 },
