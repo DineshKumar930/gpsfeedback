@@ -22,10 +22,11 @@ const StudentVerification = () => {
     const newErrors = {};
 
     if (!formData.rollNumber.trim()) {
-      newErrors.rollNumber = "Roll number is required";
-    } else if (!/^\d{6,10}$/.test(formData.rollNumber)) {
-      newErrors.rollNumber = "Enter valid roll number (6-10 digits)";
-    }
+  newErrors.rollNumber = 'Roll number is required'
+} else if (!/^[A-Za-z0-9]{15}$/.test(formData.rollNumber)) {
+  newErrors.rollNumber = 'Roll number must be exactly 15 characters (letters and numbers only)'
+}
+
 
     if (!formData.branch) {
       newErrors.branch = "Please select your branch";
@@ -120,17 +121,19 @@ const StudentVerification = () => {
                 <span className="label-icon">🎓</span>
                 Roll Number
               </label>
-              <input
-                type="text"
-                id="rollNumber"
-                name="rollNumber"
-                value={formData.rollNumber}
-                onChange={handleChange}
-                placeholder="Enter your roll number"
-                className={errors.rollNumber ? "error" : ""}
-                maxLength="10"
-                inputMode="numeric"
-              />
+              
+             <input
+  type="text"
+  id="rollNumber"
+  name="rollNumber"
+  value={formData.rollNumber}
+  onChange={handleChange}
+  placeholder="Enter your enrollment number"
+  className={errors.rollNumber ? 'error' : ''}
+  maxLength="15"
+/>
+
+              
               {errors.rollNumber && (
                 <div className="error-message">
                   <span>⚠</span> {errors.rollNumber}
