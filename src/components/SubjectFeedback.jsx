@@ -294,7 +294,7 @@ const SubjectFeedback = () => {
                 >
                   {isSubmitting ? (
                     <>
-                      <span className="loading-spinner"></span>
+                      <span className="loadingd-spinner"></span>
                       Submitting...
                     </>
                   ) : (
