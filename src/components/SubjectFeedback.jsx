@@ -131,7 +131,7 @@ const SubjectFeedback = () => {
     }
 
     try {
-      const response = await fetch("https://feedbackapi-4p6d.onrender.com/api/feedback", {
+      const response = await fetch("https://feedbackapi-4p6d.onrender.com/api///", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
